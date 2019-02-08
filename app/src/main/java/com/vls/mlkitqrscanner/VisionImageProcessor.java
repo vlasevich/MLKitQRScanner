@@ -13,22 +13,15 @@
 // limitations under the License.
 package com.vls.mlkitqrscanner;
 
-import android.graphics.Bitmap;
-import android.media.Image;
 
 import com.google.firebase.ml.common.FirebaseMLException;
-
 import java.nio.ByteBuffer;
 
 /** An inferface to process the images with different ML Kit detectors and custom image models. */
 public interface VisionImageProcessor {
 
   /** Processes the images with the underlying machine learning models. */
-  void process(ByteBuffer data, FrameMetadata frameMetadata)
-      throws FirebaseMLException;
-
-  /** Processes the images. */
-  void process(Image bitmap, int rotation);
+  void process(ByteBuffer data, FrameMetadata frameMetadata) throws FirebaseMLException;
 
   /** Stops the underlying machine learning model and release resources. */
   void stop();

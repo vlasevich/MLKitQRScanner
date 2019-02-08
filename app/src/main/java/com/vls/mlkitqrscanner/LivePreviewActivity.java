@@ -9,19 +9,9 @@ import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.ToggleButton;
 
-import com.google.android.gms.common.annotation.KeepName;
-import com.google.firebase.ml.common.FirebaseMLException;
-
-
-import com.vls.mlkitqrscanner.barcodescanning.BarcodeScanningProcessor;
 
 import java.io.IOException;
 import java.util.ArrayList;

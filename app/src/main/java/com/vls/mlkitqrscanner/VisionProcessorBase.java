@@ -54,24 +54,6 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
                 FirebaseVisionImage.fromByteBuffer(data, metadata), frameMetadata);
     }
 
-    /**
-     * Detects feature from given media.Image
-     *
-     * @return created FirebaseVisionImage
-     */
-    @Override
-    public void process(Image image, int rotation) {
-        if (shouldThrottle.get()) {
-            return;
-        }
-        // This is for overlay display's usage
-        FrameMetadata frameMetadata =
-                new FrameMetadata.Builder().setWidth(image.getWidth()).setHeight(image.getHeight()).build();
-        FirebaseVisionImage fbVisionImage =
-                FirebaseVisionImage.fromMediaImage(image, rotation);
-        detectInVisionImage(fbVisionImage, frameMetadata);
-    }
-
     private void detectInVisionImage(
             FirebaseVisionImage image,
             final FrameMetadata metadata
