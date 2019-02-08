@@ -1,16 +1,3 @@
-// Copyright 2018 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 package com.vls.mlkitqrscanner;
 
 import android.content.Context;
@@ -40,32 +27,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Demo app showing the various features of ML Kit for Firebase. This class is used to set up
- * continuous frame processing on frames from a camera source.
- */
-@KeepName
 public final class LivePreviewActivity extends AppCompatActivity
         implements OnRequestPermissionsResultCallback,
-        OnItemSelectedListener,
         CompoundButton.OnCheckedChangeListener {
-    private static final String FACE_DETECTION = "Face Detection";
-    private static final String TEXT_DETECTION = "Text Detection";
+
     private static final String BARCODE_DETECTION = "Barcode Detection";
-    private static final String IMAGE_LABEL_DETECTION = "Label Detection";
-    private static final String CLASSIFICATION = "Classification";
-    private static final String TAG = "LivePreviewActivity";
+    private static final String TAG = "vls";
     private static final int PERMISSION_REQUESTS = 1;
 
     private CameraSource cameraSource = null;
     private CameraSourcePreview preview;
     private GraphicOverlay graphicOverlay;
-    private String selectedModel = FACE_DETECTION;
+    private String selectedModel = BARCODE_DETECTION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
 
         if (!allPermissionsGranted()) {
             getRuntimePermissions();
@@ -82,23 +59,6 @@ public final class LivePreviewActivity extends AppCompatActivity
             Log.d(TAG, "graphicOverlay is null");
         }
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        List<String> options = new ArrayList<>();
-        options.add(BARCODE_DETECTION);
-        options.add(IMAGE_LABEL_DETECTION);
-
-        options.add(FACE_DETECTION);
-        options.add(TEXT_DETECTION);
-
-        options.add(CLASSIFICATION);
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_style, options);
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
-        spinner.setOnItemSelectedListener(this);
-
         ToggleButton facingSwitch = (ToggleButton) findViewById(R.id.facingswitch);
         facingSwitch.setOnCheckedChangeListener(this);
 
@@ -107,26 +67,6 @@ public final class LivePreviewActivity extends AppCompatActivity
         } else {
             getRuntimePermissions();
         }
-    }
-
-    @Override
-    public synchronized void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        selectedModel = parent.getItemAtPosition(pos).toString();
-        Log.d(TAG, "Selected model: " + selectedModel);
-        preview.stop();
-        if (allPermissionsGranted()) {
-            createCameraSource(selectedModel);
-            startCameraSource();
-        } else {
-            getRuntimePermissions();
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Do nothing.
     }
 
     @Override
