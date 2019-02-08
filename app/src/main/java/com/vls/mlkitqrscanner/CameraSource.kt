@@ -440,7 +440,9 @@ class CameraSource(private var activity: Activity) {
          */
         @SuppressLint("Assert")
         internal fun release() {
-            assert(processingThread!!.state == State.TERMINATED)
+            if (processingThread != null) {
+                assert(processingThread?.state == State.TERMINATED)
+            }
         }
 
         /** Marks the runnable as active/not active. Signals any blocked threads to continue.  */
