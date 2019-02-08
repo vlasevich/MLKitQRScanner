@@ -89,7 +89,18 @@ public final class LivePreviewActivity extends AppCompatActivity
             cameraSource = new CameraSource(this, graphicOverlay);
         }
         Log.i(TAG, "Using Barcode Detector Processor");
-        cameraSource.setMachineLearningFrameProcessor(new BarcodeScanningProcessor());
+        cameraSource.setMachineLearningFrameProcessor(new BarcodeScanningProcessor(new BarcodeScanningProcessor.OnScanningListener() {
+            @Override
+            public void getRawValue(String rawValue) {
+                Log.e("VLS", rawValue);
+                //cameraSource.release();
+                try {
+                    preview.start(cameraSource, graphicOverlay);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
     }
 
     /**
