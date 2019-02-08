@@ -24,7 +24,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.vls.mlkitqrscanner.FrameMetadata;
-import com.vls.mlkitqrscanner.GraphicOverlay;
 import com.vls.mlkitqrscanner.VisionProcessorBase;
 
 import java.io.IOException;
@@ -72,9 +71,7 @@ public class BarcodeScanningProcessor extends VisionProcessorBase<List<FirebaseV
     @Override
     protected void onSuccess(
             @NonNull List<FirebaseVisionBarcode> barcodes,
-            @NonNull FrameMetadata frameMetadata,
-            @NonNull GraphicOverlay graphicOverlay) {
-        graphicOverlay.clear();
+            @NonNull FrameMetadata frameMetadata) {
 
         if (scanningListener != null && barcodes.size() > 0) {
             scanningListener.getRawValue(barcodes.get(0).getRawValue());

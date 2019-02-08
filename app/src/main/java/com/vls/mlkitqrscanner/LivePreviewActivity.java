@@ -37,7 +37,6 @@ public final class LivePreviewActivity extends AppCompatActivity
 
     private CameraSource cameraSource = null;
     private CameraSourcePreview preview;
-    private GraphicOverlay graphicOverlay;
     private String selectedModel = BARCODE_DETECTION;
 
     @Override
@@ -54,10 +53,7 @@ public final class LivePreviewActivity extends AppCompatActivity
         if (preview == null) {
             Log.d(TAG, "Preview is null");
         }
-        graphicOverlay = (GraphicOverlay) findViewById(R.id.fireFaceOverlay);
-        if (graphicOverlay == null) {
-            Log.d(TAG, "graphicOverlay is null");
-        }
+
 
         ToggleButton facingSwitch = (ToggleButton) findViewById(R.id.facingswitch);
         facingSwitch.setOnCheckedChangeListener(this);
@@ -86,7 +82,7 @@ public final class LivePreviewActivity extends AppCompatActivity
     private void createCameraSource(String model) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
-            cameraSource = new CameraSource(this, graphicOverlay);
+            cameraSource = new CameraSource(this);
         }
         Log.i(TAG, "Using Barcode Detector Processor");
         cameraSource.setMachineLearningFrameProcessor(new BarcodeScanningProcessor(new BarcodeScanningProcessor.OnScanningListener() {
@@ -95,7 +91,7 @@ public final class LivePreviewActivity extends AppCompatActivity
                 Log.e("VLS", rawValue);
                 //cameraSource.release();
                 try {
-                    preview.start(cameraSource, graphicOverlay);
+                    preview.start(cameraSource);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -114,10 +110,7 @@ public final class LivePreviewActivity extends AppCompatActivity
                 if (preview == null) {
                     Log.d(TAG, "resume: Preview is null");
                 }
-                if (graphicOverlay == null) {
-                    Log.d(TAG, "resume: graphOverlay is null");
-                }
-                preview.start(cameraSource, graphicOverlay);
+                preview.start(cameraSource);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to start camera source.", e);
                 cameraSource.release();

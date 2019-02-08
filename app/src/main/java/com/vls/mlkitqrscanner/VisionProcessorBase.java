@@ -27,13 +27,6 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Abstract base class for ML Kit frame processors. Subclasses need to implement {@link
- * #onSuccess(T, FrameMetadata, GraphicOverlay)} to define what they want to with the detection
- * results and {@link #detectInImage(FirebaseVisionImage)} to specify the detector object.
- *
- * @param <T> The type of the detected feature.
- */
 public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
 
     // Whether we should ignore process(). This is usually caused by feeding input data faster than
@@ -45,8 +38,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
 
     @Override
     public void process(
-            ByteBuffer data, final FrameMetadata frameMetadata, final GraphicOverlay
-            graphicOverlay) {
+            ByteBuffer data, final FrameMetadata frameMetadata) {
         if (shouldThrottle.get()) {
             return;
         }
@@ -59,17 +51,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
                         .build();
 
         detectInVisionImage(
-                FirebaseVisionImage.fromByteBuffer(data, metadata), frameMetadata, graphicOverlay);
-    }
-
-    // Bitmap version
-    @Override
-    public void process(Bitmap bitmap, final GraphicOverlay
-            graphicOverlay) {
-        if (shouldThrottle.get()) {
-            return;
-        }
-        detectInVisionImage(FirebaseVisionImage.fromBitmap(bitmap), null, graphicOverlay);
+                FirebaseVisionImage.fromByteBuffer(data, metadata), frameMetadata);
     }
 
     /**
@@ -78,31 +60,29 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
      * @return created FirebaseVisionImage
      */
     @Override
-    public void process(Image image, int rotation, final GraphicOverlay graphicOverlay) {
+    public void process(Image image, int rotation) {
         if (shouldThrottle.get()) {
             return;
         }
         // This is for overlay display's usage
         FrameMetadata frameMetadata =
-                new FrameMetadata.Builder().setWidth(image.getWidth()).setHeight(image.getHeight
-                        ()).build();
+                new FrameMetadata.Builder().setWidth(image.getWidth()).setHeight(image.getHeight()).build();
         FirebaseVisionImage fbVisionImage =
                 FirebaseVisionImage.fromMediaImage(image, rotation);
-        detectInVisionImage(fbVisionImage, frameMetadata, graphicOverlay);
+        detectInVisionImage(fbVisionImage, frameMetadata);
     }
 
     private void detectInVisionImage(
             FirebaseVisionImage image,
-            final FrameMetadata metadata,
-            final GraphicOverlay graphicOverlay) {
+            final FrameMetadata metadata
+            ) {
         detectInImage(image)
                 .addOnSuccessListener(
                         new OnSuccessListener<T>() {
                             @Override
                             public void onSuccess(T results) {
                                 shouldThrottle.set(false);
-                                VisionProcessorBase.this.onSuccess(results, metadata,
-                                        graphicOverlay);
+                                VisionProcessorBase.this.onSuccess(results, metadata);
                             }
                         })
                 .addOnFailureListener(
@@ -126,8 +106,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
 
     protected abstract void onSuccess(
             @NonNull T results,
-            @NonNull FrameMetadata frameMetadata,
-            @NonNull GraphicOverlay graphicOverlay);
+            @NonNull FrameMetadata frameMetadata);
 
     protected abstract void onFailure(@NonNull Exception e);
 }
