@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Co
 
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
-    private val selectedModel = BARCODE_DETECTION
 
     private val requiredPermissions: Array<String?>
         get() {
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Co
         facingSwitch.setOnCheckedChangeListener(this)
 
         if (allPermissionsGranted()) {
-            createCameraSource(selectedModel)
+            createCameraSource()
         } else {
             getRuntimePermissions()
         }
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Co
         startCameraSource()
     }
 
-    private fun createCameraSource(model: String) {
+    private fun createCameraSource() {
         if (cameraSource == null) {
             cameraSource = CameraSource(this)
         }
@@ -122,7 +121,7 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Co
             requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         Log.i(TAG, "Permission granted!")
         if (allPermissionsGranted()) {
-            createCameraSource(selectedModel)
+            createCameraSource()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }

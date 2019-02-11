@@ -19,7 +19,6 @@ class CameraSourcePreview(context: Context?, attrs: AttributeSet?) : ViewGroup(c
     private var cameraSource: CameraSource? = null
 
 
-
     private val isPortraitMode: Boolean
         get() {
             val orientation = context.resources.configuration.orientation
@@ -127,7 +126,7 @@ class CameraSourcePreview(context: Context?, attrs: AttributeSet?) : ViewGroup(c
         /*if (childHeight > layoutHeight) {
       childHeight = layoutHeight;
       childWidth = (int) (((float) layoutHeight / (float) height) * width);
-    }*/
+        }*/
 
         for (i in 0 until childCount) {
             getChildAt(i).layout(0, 0, layoutWidth, layoutHeight)

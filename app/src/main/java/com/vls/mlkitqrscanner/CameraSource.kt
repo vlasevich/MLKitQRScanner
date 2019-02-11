@@ -63,9 +63,9 @@ class CameraSource(private var activity: Activity) {
 
     // These values may be requested by the caller.  Due to hardware limitations, we may need to
     // select close, but not exactly the same values for these.
-    private val requestedFps = 20.0f
+    private val requestedFps = 24.0f
     private val requestedPreviewWidth = 1280
-    private val requestedPreviewHeight = 960
+    private val requestedPreviewHeight = 720
     private val requestedAutoFocus = true
 
     // These instances need to be held onto to avoid GC of their underlying resources.  Even though
